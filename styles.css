@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #444466;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.board-container {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  background-color: #444455;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#board {
+  flex: 1;
+  background: #333344;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.note-creator-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background-color: #444455;
+}
+
+.note-creator-container textarea {
+  padding: 5px;
+  width: 100%;
+  max-width: 600px;
+  resize: none;
+}
+
+.note-creator-container button {
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
