@@ -13,10 +13,8 @@ This Sticky Notes Bulletin Board allows users to create virtual sticky notes on 
 
 1. Clone the repository:
 **git clone https://github.com/FriedAxons/sticky-notes-board.git**
-<br>
 2. Navigate to project directory:
 **cd sticky-notes-board**
-<br>
 3. Open the index.html in your web browser
    
 #### Or
