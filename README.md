@@ -12,16 +12,16 @@ This Sticky Notes Bulletin Board allows users to create virtual sticky notes on 
 ## Installation or Usage
 
 1. Clone the repository:
-    git clone https://github.com/FriedAxons/sticky-notes-board.git
+**git clone https://github.com/FriedAxons/sticky-notes-board.git**
 <br>
-2. Navigate to project directory
-   cd sticky-notes-board
+2. Navigate to project directory:
+**cd sticky-notes-board**
 <br>
 3. Open the index.html in your web browser
    
 #### Or
 
-Visit the live GitHub page to use this here: 
+Visit the live GitHub page [here](https://friedaxons.github.io/sticky-notes-board/).
 
 ## Technologies Used
 
