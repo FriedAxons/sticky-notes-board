@@ -13,10 +13,11 @@ body {
   width: 80%;
   height: 80%;
   background-color: #444455;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border-radius: 5px;
 }
 
 #board {
@@ -36,8 +37,9 @@ body {
 .note-creator-container textarea {
   padding: 5px;
   width: 100%;
-  max-width: 600px;
+  max-width: 1920px;
   resize: none;
+  border-radius: 5px;
 }
 
 .note-creator-container button {
@@ -47,4 +49,10 @@ body {
   border: none;
   cursor: pointer;
   margin-left: 10px;
+
+  border-radius: 5px;
+}
+
+.note-creator-container button:hover {
+  background: #008bff;
 }
