@@ -22,17 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const boardWidth = board.offsetWidth - 150;
     const boardHeight = board.offsetHeight - 150;
-    let randomX = Math.random() * boardWidth;
-    let randomY = Math.random() * boardHeight;
-
-    // Adjust note position if it overflows the board's boundaries
-    if (randomX + 150 > board.offsetWidth) {
-      randomX = board.offsetWidth - 150;
-    }
-    if (randomY + 150 > board.offsetHeight) {
-      randomY = board.offsetHeight - 150;
-    }
-
+    const randomX = Math.random() * boardWidth;
+    const randomY = Math.random() * boardHeight;
     note.style.left = `${randomX}px`;
     note.style.top = `${randomY}px`;
 
@@ -76,20 +67,18 @@ document.addEventListener("DOMContentLoaded", () => {
       let newLeft = leftPercent * boardWidth;
       let newTop = topPercent * boardHeight;
 
-      // Ensure the note stays within the board's boundaries
+      // Ensure the note stays within the board's boundaries temporarily
+      let adjustedLeft = newLeft;
+      let adjustedTop = newTop;
       if (newLeft + note.offsetWidth > boardWidth) {
-        newLeft = boardWidth - note.offsetWidth;
+        adjustedLeft = boardWidth - note.offsetWidth;
       }
       if (newTop + note.scrollHeight > boardHeight) {
-        newTop = boardHeight - note.scrollHeight;
+        adjustedTop = boardHeight - note.scrollHeight;
       }
 
-      note.style.left = `${newLeft}px`;
-      note.style.top = `${newTop}px`;
-
-      // Update the dataset to reflect the new position
-      note.dataset.leftPercent = newLeft / boardWidth;
-      note.dataset.topPercent = newTop / boardHeight;
+      note.style.left = `${adjustedLeft}px`;
+      note.style.top = `${adjustedTop}px`;
     });
   };
 
