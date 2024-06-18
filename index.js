@@ -3,16 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const noteContent = document.getElementById("noteContent");
   const addNoteButton = document.getElementById("addNote");
 
+  const isMobileDevice =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
   const makeNoteDraggable = (note) => {
     let offsetX, offsetY;
 
-    note.addEventListener("mousedown", (e) => {
-      // Check if the left mouse button (button === 0) is pressed
-      // Without this, right click holds dragged too
-      if (e.button !== 0) return;
-
-      const initialX = e.clientX;
-      const initialY = e.clientY;
+    const startDragging = (initialX, initialY) => {
       const initialLeft = parseFloat(note.style.left);
       const initialTop = parseFloat(note.style.top);
 
@@ -38,17 +37,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
 
-      document.addEventListener("mousemove", onMouseMove);
+      const onMouseUp = () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        saveNotes();
+      };
 
-      document.addEventListener(
-        "mouseup",
-        () => {
-          document.removeEventListener("mousemove", onMouseMove);
-          saveNotes();
-        },
-        { once: true }
-      );
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    };
+
+    note.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return; // Check if left mouse button is pressed
+
+      offsetX = e.clientX - note.getBoundingClientRect().left;
+      offsetY = e.clientY - note.getBoundingClientRect().top;
+      startDragging(e.clientX, e.clientY);
     });
+
+    if (isMobileDevice) {
+      note.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        offsetX = touch.clientX - note.getBoundingClientRect().left;
+        offsetY = touch.clientY - note.getBoundingClientRect().top;
+        startDragging(touch.clientX, touch.clientY);
+      });
+    }
   };
 
   const saveNotes = () => {
@@ -81,14 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Adjust note height based on content
     note.style.height = `${note.scrollHeight}px`;
 
-    // Reposition the note if it overflows the boards height
+    // Ensure note stays within board's boundaries
     if (parseFloat(noteData.top) + note.scrollHeight > board.offsetHeight) {
-      note.style.top = `${board.offsetHeight} - ${note.scrollHeight}px`;
+      note.style.top = `${board.offsetHeight - note.scrollHeight}px`;
       note.dataset.topPercent =
         (board.offsetHeight - note.scrollHeight) / board.offsetHeight;
     }
 
-    // Reposition the note if it overflows the board's width
     if (parseFloat(noteData.left) + note.offsetWidth > board.offsetWidth) {
       note.style.left = `${board.offsetWidth - note.offsetWidth}px`;
       note.dataset.leftPercent =
@@ -138,21 +151,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Adjust note height based on content
     note.style.height = `${note.scrollHeight}px`;
 
-    // Reposition the note if it overflows the board's height
+    // Ensure note stays within board's boundaries
     if (randomY + note.scrollHeight > board.offsetHeight) {
       note.style.top = `${board.offsetHeight - note.scrollHeight}px`;
       note.dataset.topPercent =
         (board.offsetHeight - note.scrollHeight) / board.offsetHeight;
     }
 
-    // Reposition the note if it overflows the board's width
     if (randomX + note.offsetWidth > board.offsetWidth) {
       note.style.left = `${board.offsetWidth - note.offsetWidth}px`;
       note.dataset.leftPercent =
         (board.offsetWidth - note.offsetWidth) / board.offsetWidth;
     }
 
-    // Make the note draggable
     makeNoteDraggable(note);
 
     // Right-click to delete note
@@ -177,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let newLeft = leftPercent * boardWidth;
       let newTop = topPercent * boardHeight;
 
-      // Ensure the note stays within the board's boundaries temporarily
+      // Ensure the note stays within the board's boundaries
       let adjustedLeft = newLeft;
       let adjustedTop = newTop;
       if (newLeft + note.offsetWidth > boardWidth) {
@@ -213,4 +224,28 @@ document.addEventListener("DOMContentLoaded", () => {
       addNoteButton.click();
     }
   });
+
+  if (isMobileDevice) {
+    let touchStartTime = 0;
+    board.addEventListener(
+      "touchend",
+      (e) => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - touchStartTime;
+        if (tapLength < 500 && tapLength > 0) {
+          const touch = e.changedTouches[0];
+          const clickedElement = document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+          );
+          if (clickedElement.classList.contains("note")) {
+            clickedElement.remove();
+            saveNotes();
+          }
+        }
+        touchStartTime = currentTime;
+      },
+      false
+    );
+  }
 });
