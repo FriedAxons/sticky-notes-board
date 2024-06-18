@@ -107,14 +107,10 @@ footer {
   }
 
   .board-container {
-    max-width: 100vh;
-    max-height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
     margin: 0;
     border-radius: 0px;
-  }
-
-  #board {
-    padding: 0;
   }
 
   footer {
