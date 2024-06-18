@@ -113,6 +113,11 @@ footer {
     border-radius: 0px;
   }
 
+  #board {
+    width: 100%;
+    height: calc(100vh - 70px);
+  }
+
   footer {
     margin: 0;
     bottom: 0;
