@@ -108,7 +108,7 @@ footer {
 
   .board-container {
     width: 100%;
-    height: calc(100vh - 107px);
+    height: 100%;
     margin: 0;
     border-radius: 0px;
   }
