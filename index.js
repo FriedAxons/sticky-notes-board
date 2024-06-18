@@ -14,11 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
       offsetX = e.clientX - note.getBoundingClientRect().left;
       offsetY = e.clientY - note.getBoundingClientRect().top;
 
-      // const onMouseMove = (e) => {
-      //   note.style.left = `${e.clientX - offsetX}px`;
-      //   note.style.top = `${e.clientY - offsetY}px`;
-      // };
-
       const onMouseMove = (e) => {
         let newX = e.clientX - offsetX;
         let newY = e.clientY - offsetY;
