@@ -11,23 +11,31 @@ document.addEventListener("DOMContentLoaded", () => {
       // Without this, right click holds dragged too
       if (e.button !== 0) return;
 
-      offsetX = e.clientX - note.getBoundingClientRect().left;
-      offsetY = e.clientY - note.getBoundingClientRect().top;
+      const initialX = e.clientX;
+      const initialY = e.clientY;
+      const initialLeft = parseFloat(note.style.left);
+      const initialTop = parseFloat(note.style.top);
 
-      const onMouseMove = (e) => {
-        let newX = e.clientX - offsetX;
-        let newY = e.clientY - offsetY;
+      const onMouseMove = (moveEvent) => {
+        const newX = initialLeft + moveEvent.clientX - initialX;
+        const newY = initialTop + moveEvent.clientY - initialY;
 
         // Boundary checks
-        if (newX < 0) newX = 0;
-        if (newY < 0) newY = 0;
-        if (newX + note.offsetWidth > board.offsetWidth)
-          newX = board.offsetWidth - note.offSetWidth;
-        if (newY + note.offsetHeight > board.offsetHeight)
-          newY = board.offsetHeight - note.offsetHeight;
+        if (newX < 0) {
+          note.style.left = `0px`;
+        } else if (newX + note.offsetWidth > board.offsetWidth) {
+          note.style.left = `${board.offsetWidth - note.offsetWidth}px`;
+        } else {
+          note.style.left = `${newX}px`;
+        }
 
-        note.style.left = `${newX}px`;
-        note.style.top = `${newY}px`;
+        if (newY < 0) {
+          note.style.top = `0px`;
+        } else if (newY + note.offsetHeight > board.offsetHeight) {
+          note.style.top = `${board.offsetHeight - note.offsetHeight}px`;
+        } else {
+          note.style.top = `${newY}px`;
+        }
       };
 
       document.addEventListener("mousemove", onMouseMove);
@@ -98,7 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const createStickyNote = (content) => {
-    const colors = ["#ffcc99", "#99ccff", "#ffff99", "#cc99ff", "#99ff99"];
+    const colors = [
+      "#ffcc99",
+      "#99ccff",
+      "#ffff99",
+      "#cc99ff",
+      "#99ff99",
+      "#ff9999",
+      "#ff99cc",
+    ];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
     const note = document.createElement("div");
