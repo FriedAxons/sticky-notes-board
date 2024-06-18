@@ -37,14 +37,45 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
 
+      const onTouchMove = (moveEvent) => {
+        const touch = moveEvent.touches[0];
+        const newX = initialLeft + touch.clientX - initialX;
+        const newY = initialTop + touch.clientY - initialY;
+
+        // Boundary checks
+        if (newX < 0) {
+          note.style.left = `0px`;
+        } else if (newX + note.offsetWidth > board.offsetWidth) {
+          note.style.left = `${board.offsetWidth - note.offsetWidth}px`;
+        } else {
+          note.style.left = `${newX}px`;
+        }
+
+        if (newY < 0) {
+          note.style.top = `0px`;
+        } else if (newY + note.offsetHeight > board.offsetHeight) {
+          note.style.top = `${board.offsetHeight - note.offsetHeight}px`;
+        } else {
+          note.style.top = `${newY}px`;
+        }
+      };
+
       const onMouseUp = () => {
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseup", onMouseUp);
         saveNotes();
       };
 
+      const onTouchEnd = () => {
+        document.removeEventListener("touchmove", onTouchMove);
+        document.removeEventListener("touchend", onTouchEnd);
+        saveNotes();
+      };
+
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
+      document.addEventListener("touchmove", onTouchMove);
+      document.addEventListener("touchend", onTouchEnd);
     };
 
     note.addEventListener("mousedown", (e) => {
