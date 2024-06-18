@@ -113,6 +113,10 @@ footer {
     border-radius: 0px;
   }
 
+  #board {
+    padding: 0;
+  }
+
   footer {
     margin: 0;
     bottom: 0;
